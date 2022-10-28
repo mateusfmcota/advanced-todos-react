@@ -1,0 +1,50 @@
+body {
+  font-family: sans-serif;
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  padding: 0;
+  margin: 0;
+
+  font-size: 14px;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form > div {
+  margin: 10px;
+}
+
+.editar-tarefa > div {
+  margin: 10px;
+}
+
+.welcome-label {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.task-box {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+
+}
