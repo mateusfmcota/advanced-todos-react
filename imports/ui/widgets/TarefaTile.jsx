@@ -2,10 +2,10 @@ import React from 'react';
 import {Button, ListItem, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem} from "@mui/material";
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import {TasksCollection} from "../../db/TaskCollection";
 
 export const TarefaTile= (props) => {
     const {task} = props;
+    
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -17,6 +17,7 @@ export const TarefaTile= (props) => {
     };
 
     const handleEditar = () => {
+        window.location.replace(`editar/${task._id}`);
         setAnchorEl(null);
     };
 

@@ -16,7 +16,6 @@ const insertTask = (taskText, user) => TasksCollection.insert({
     createdAt: new Date(),
 });
 
-
 Meteor.startup(() => {
     if(!Accounts.findUserByUsername(SEED_USERNAME)){
         Accounts.createUser({

@@ -7,8 +7,13 @@ import {ListaTarefas} from "../widgets/ListaTarefas";
 export const TelaTarefas = () => {
     const [offset, setOffset] = React.useState(0);
 
+
+    const user = useTracker(() => Meteor.user());
+    console.log('usr');
+    console.log(user);
+
+
     const { tasks, pendingTasksCount, isLoading} = useTracker(() => {
-        console.log(offset);
         const noDataAvailable = { tasks: [], pendingTasksCount: 0 };
 
 

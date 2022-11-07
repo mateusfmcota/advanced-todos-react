@@ -31,7 +31,7 @@ body {
   margin: 10px;
 }
 
-.editar-tarefa > div {
+.editar-tarefa > form > div {
   margin: 10px;
 }
 
@@ -46,5 +46,4 @@ body {
   height: 100vh;
   justify-content: center;
   align-items: center;
-
 }
