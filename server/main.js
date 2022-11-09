@@ -3,6 +3,7 @@ import { Accounts } from 'meteor/accounts-base';
 import {TasksCollection} from "../imports/db/TaskCollection";
 import '/imports/api/TasksPublications';
 import '/imports/api/TasksMethods';
+import '/imports/api/AccountMethods';
 
 const SEED_USERNAME = 'teste';
 const SEED_PASSWORD = 'teste';

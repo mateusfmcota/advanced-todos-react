@@ -4,6 +4,8 @@ import {TarefaTile} from "./TarefaTile";
 
 export const ListaTarefas = (props) => {
     const { tasks } = props;
+
+
     return(
     <div>
         <label className='welcome-label'>Tarefas cadastradas</label>

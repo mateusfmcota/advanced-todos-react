@@ -52,8 +52,6 @@ Meteor.methods({
         check(taskId, String);
         check(taskUp, Object);
 
-        console.log(this);
-
         if (!this.userId) {
             throw new Meteor.Error('Not authorized.');
         }
@@ -86,6 +84,25 @@ Meteor.methods({
         TasksCollection.update(taskId,
             {$set: {
                     isPessoal
+                }
+            });
+    },
+    'tasks.setSituacao'(taskId, situacao) {
+        check(taskId, String);
+        check(situacao, String);
+
+        if (!this.userId) {
+            throw new Meteor.Error('Not authorized.');
+        }
+
+        const task = TasksCollection.findOne({ _id: taskId, userId: this.userId });
+        if (!task){
+            throw new Meteor.Error('Access denied.');
+        }
+
+        TasksCollection.update(taskId,
+            {$set: {
+                    situacao
                 }
             });
     }

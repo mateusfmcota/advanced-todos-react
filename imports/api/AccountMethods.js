@@ -18,17 +18,34 @@ Meteor.methods({
             profile: profile,
         });
     },
-    'user.update'(userId,username, password, profile){
+    'user.updateProfile'(userId, profile){
         check(userId, String);
-        check(username, String);
-        check(password, String);
         check(profile, Object);
 
         if(!this.userId){
             throw new Meteor.Error('Not Authorized');
         }
 
-        const user = Accounts.findUserByUsername(username);
+        // const user = Accounts.findUserByUsername(username);
+        // if (!user){
+        //     throw new Meteor.Error('not your user');
+        // }
+
+        Meteor.users.update(userId,
+            {$set: {
+                    profile: profile,
+                }
+            });
+    },
+    'user.updateProfileImage'(userId, profileImage){
+        check(userId, String);
+        check(profileImage, String);
+
+        if(!this.userId){
+            throw new Meteor.Error('Not Authorized');
+        }
+
+        const user = Meteor.users.findOne({_id :this.userId});
         if (!user){
             throw new Meteor.Error('not your user');
         }
@@ -36,9 +53,7 @@ Meteor.methods({
 
         Meteor.users.update(userId,
             {$set: {
-                    username: username,
-                    password: password,
-                    profile: profile,
+                    "profile.image" : profileImage
                 }
             });
     },

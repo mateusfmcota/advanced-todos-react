@@ -47,3 +47,13 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+.avatar {
+  position: absolute;
+  top: 2%;
+  right: 2%;
+}
+
+#file-input {
+  display: none;
+}

@@ -8,8 +8,7 @@ export const TelaLogin = () => {
 
     const submit = e => {
         e.preventDefault();
-        Meteor.loginWithPassword(usuario, senha,(cb) => console.log(`cb: ${cb}`) );
-        window.location.replace('tasks')
+        Meteor.loginWithPassword(usuario, senha,() => window.location.replace('tasks'));
     }
 
     return (

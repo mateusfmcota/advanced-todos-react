@@ -5,7 +5,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 export const TarefaTile= (props) => {
     const {task} = props;
-    
+
 
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
@@ -26,13 +26,15 @@ export const TarefaTile= (props) => {
         setAnchorEl(null);
     };
 
+    const usuario = Meteor.users.findOne({"_id": task.userId })
+
     return(
         <ListItem disablePadding>
             <ListItemButton>
                 <ListItemIcon>
                     <AccessTimeIcon />
                 </ListItemIcon>
-                <ListItemText primary={task.text} secondary={task.userId} />
+                <ListItemText primary={task.text} secondary={usuario && usuario.username} />
                     <Button
                         id="basic-button"
                         aria-controls={open ? 'basic-menu' : undefined}

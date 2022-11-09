@@ -1,5 +1,6 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Meteor } from 'meteor/meteor';
+import { useParams, useNavigate } from "react-router-dom";
 import { useTracker } from 'meteor/react-meteor-data';
 import {Box, Button, FormControlLabel, InputLabel, MenuItem, Select, Switch, TextField} from "@mui/material";
 import {TasksCollection} from "../../db/TaskCollection";
@@ -9,8 +10,7 @@ export const TelaEditarTarefa = () => {
     const {id} = useParams();
     const [visualizando, setVisualizando] = React.useState(true);
     const [taskState, setTaskState] = React.useState();
-
-    const user = useTracker(() => Meteor.user());
+    const navigate = useNavigate();
 
     const {task, isLoading} = useTracker(() => {
         const noDataAvailable = { task: [], pendingTasksCount: 0 };
@@ -30,6 +30,8 @@ export const TelaEditarTarefa = () => {
         setTaskState(task);
     }, [task]);
 
+    const isPossivelAlterar = Meteor.user() && (Meteor.user()._id === task.userId)
+
     const submitHandle = (event) => {
         event.preventDefault();
         if(visualizando){
@@ -38,32 +40,76 @@ export const TelaEditarTarefa = () => {
         }
 
         Meteor.call('tasks.update', task._id ,taskState);
+        setVisualizando(!visualizando);
+    }
+
+    const cancelHandle = (event) => {
+        event.preventDefault();
+
+        navigate('/tasks');
     }
 
     const setText = (event) => {
         setTaskState(prevState => ({
-            task: {...prevState, text: event.target.value},
-        }))
+            ...prevState,
+            text: event.target.value,
+        }));
     }
 
     const setDesc = (event) => {
         setTaskState(prevState => ({
-            task: {...prevState, description: event.target.value},
-        }))
+            ...prevState,
+            description: event.target.value,
+        }));
     }
 
     const setSituacao = (event) => {
-        console.log(event.target.value);
         setTaskState(prevState => ({
-            task: {...prevState, situacao: event.target.value},
-        }))
+            ...prevState,
+            situacao: event.target.value,
+        }));
     }
 
     const setPessoal = (event) => {
         setTaskState(prevState => ({
-            task: {...prevState, pessoal: event.target.value},
-        }))
+            ...prevState,
+            pessoal: !taskState.pessoal,
+        }));
     }
+
+    const getProximaSituacao = () =>{
+        if(taskState.situacao === 'Cadastrada') {
+            return "em andamento";
+        }else if(taskState.situacao === "Em Andamento"){
+            return "concluida";
+        }
+
+        return 'Cadastrada';
+    }
+
+    const alterarSituacao = (situacao) => {
+        setTaskState(prevState => ({
+            ...prevState,
+            situacao: situacao,
+        }));
+
+        Meteor.call('tasks.setSituacao', task._id ,situacao);
+    }
+
+    const alterarParaCadastrada = () => {
+        alterarSituacao("Cadastrada")
+    }
+
+    const alterarParaProximaSituacao = () => {
+        if(taskState.situacao === "Cadastrada"){
+            alterarSituacao("Em Andamento");
+        }else if(taskState.situacao === "Em Andamento"){
+            alterarSituacao("Concluída");
+        }else {
+            alterarSituacao("Cadastrada");
+        }
+    }
+
 
     return (
         <Box className="task-box">
@@ -134,8 +180,12 @@ export const TelaEditarTarefa = () => {
                                 />
                             </div>
                             <div>
-                                <Button type="submit" variant="outlined">{!visualizando? 'salvar' : 'editar'}</Button>
-                                <Button onClick={(_) => setVisualizando(true)} variant="outlined">Cancelar</Button>
+                                <Button onClick={alterarParaProximaSituacao} disabled={!isPossivelAlterar} variant="outlined">Alterar para {getProximaSituacao()} </Button>
+                                <Button onClick={alterarParaCadastrada} disabled={!isPossivelAlterar} variant="outlined">Voltar para cadastrada</Button>
+                            </div>
+                            <div>
+                                <Button type="submit" disabled={!isPossivelAlterar} variant="outlined">{!visualizando? 'salvar' : 'editar'}</Button>
+                                <Button onClick={cancelHandle} variant="outlined">Cancelar</Button>
                             </div>
                         </form>
                     </div>
